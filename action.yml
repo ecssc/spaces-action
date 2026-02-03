@@ -33,7 +33,7 @@ outputs:
   output_url:
     description: 'The URL of the uploaded files'
 runs:
-  using: 'node22'
+  using: 'node24'
   main: 'dist/index.cjs'
 branding:
   icon: 'package'
