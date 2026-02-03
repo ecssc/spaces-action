@@ -23,6 +23,9 @@ inputs:
   versioning:
     description: 'Version subdirectory: true for package.json, path to package.json, or any string (e.g. commit SHA)'
     required: false
+  upload_latest:
+    description: 'Also upload files to a latest/ directory (requires versioning to be enabled)'
+    required: false
   cdn_domain:
     description: 'DigitalOcean Spaces CDN domain'
     required: false

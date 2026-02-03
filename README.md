@@ -37,17 +37,18 @@ jobs:
 
 ## Inputs
 
-| Input          | Description                                                                                          | Required | Default       |
-| -------------- | ---------------------------------------------------------------------------------------------------- | -------- | ------------- |
-| `access_key`   | DigitalOcean Spaces access key                                                                       | Yes      |               |
-| `secret_key`   | DigitalOcean Spaces secret key                                                                       | Yes      |               |
-| `space_name`   | Name of your DigitalOcean Space                                                                      | Yes      |               |
-| `space_region` | Region of your DigitalOcean Space (e.g. `nyc3`, `fra1`)                                              | Yes      |               |
-| `source`       | Path to the source file or directory to upload                                                       | Yes      |               |
-| `out_dir`      | Output directory path within your Space                                                              | No       | `/`           |
-| `versioning`   | Version subdirectory: `true` for package.json, path to package.json, or any string (e.g. commit SHA) | No       | `false`       |
-| `cdn_domain`   | Custom CDN domain for output URL                                                                     | No       |               |
-| `permission`   | ACL permission for uploaded files                                                                    | No       | `public-read` |
+| Input           | Description                                                                                          | Required | Default       |
+| --------------- | ---------------------------------------------------------------------------------------------------- | -------- | ------------- |
+| `access_key`    | DigitalOcean Spaces access key                                                                       | Yes      |               |
+| `secret_key`    | DigitalOcean Spaces secret key                                                                       | Yes      |               |
+| `space_name`    | Name of your DigitalOcean Space                                                                      | Yes      |               |
+| `space_region`  | Region of your DigitalOcean Space (e.g. `nyc3`, `fra1`)                                              | Yes      |               |
+| `source`        | Path to the source file or directory to upload                                                       | Yes      |               |
+| `out_dir`       | Output directory path within your Space                                                              | No       | `/`           |
+| `versioning`    | Version subdirectory: `true` for package.json, path to package.json, or any string (e.g. commit SHA) | No       | `false`       |
+| `upload_latest` | Also upload files to a `latest/` directory (requires versioning)                                     | No       | `false`       |
+| `cdn_domain`    | Custom CDN domain for output URL                                                                     | No       |               |
+| `permission`    | ACL permission for uploaded files                                                                    | No       | `public-read` |
 
 ## Outputs
 
@@ -88,7 +89,7 @@ Generate access keys from your DigitalOcean [API settings](https://cloud.digital
 
 ### Versioning
 
-When `versioning` is enabled, files are uploaded to a version-specific directory and also copied to `latest/`.
+When `versioning` is enabled, files are uploaded to a version-specific subdirectory.
 
 The `versioning` input accepts:
 
@@ -110,10 +111,7 @@ The `versioning` input accepts:
     versioning: true
 ```
 
-This creates:
-
-- `v1.2.3/js/bundle.min.js`
-- `latest/js/bundle.min.js`
+This creates: `v1.2.3/js/bundle.min.js`
 
 To use a package.json in a different location:
 
@@ -135,9 +133,28 @@ versioning: packages/my-lib/package.json
     versioning: ${{ github.sha }}
 ```
 
+This creates: `abc1234.../builds/`
+
+#### Uploading to latest
+
+Set `upload_latest: true` to also upload files to a `latest/` directory:
+
+```yml
+- uses: ecssc/spaces-action@v1
+  with:
+    access_key: ${{ secrets.SPACES_ACCESS_KEY }}
+    secret_key: ${{ secrets.SPACES_SECRET_KEY }}
+    space_name: my-space
+    space_region: fra1
+    source: dist
+    out_dir: builds
+    versioning: true
+    upload_latest: true
+```
+
 This creates:
 
-- `abc1234.../builds/`
+- `v1.2.3/builds/`
 - `latest/builds/`
 
 ### Custom CDN domain

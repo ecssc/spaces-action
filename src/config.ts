@@ -10,6 +10,7 @@ export interface Config {
   accessKey: string
   secretKey: string
   versioning: string
+  uploadLatest: boolean
   cdnDomain: string | undefined
   permission: string
 }
@@ -49,6 +50,7 @@ const config: Config = {
   accessKey: core.getInput('access_key'),
   secretKey: core.getInput('secret_key'),
   versioning: core.getInput('versioning') || 'false',
+  uploadLatest: core.getInput('upload_latest') === 'true',
   cdnDomain: core.getInput('cdn_domain') || undefined,
   permission: core.getInput('permission') || 'public-read',
 }
