@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.0.4](https://github.com/ecssc/spaces-action/compare/1.0.3...1.0.4) (2026-02-03)
+
 ## [1.0.3](https://github.com/ecssc/spaces-action/compare/1.0.2...1.0.3) (2026-02-03)
 
 ### Bug Fixes
