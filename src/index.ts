@@ -7,17 +7,28 @@ import config from './config'
 import { forEach, getVersion } from './helpers'
 import S3Interface from './interface'
 
+const colors = {
+  cyan: '\x1b[36m',
+  green: '\x1b[32m',
+  dim: '\x1b[2m',
+  reset: '\x1b[0m',
+}
+
 async function run(): Promise<void> {
   const shouldVersion = config.versioning !== 'false'
 
   let outDir = config.outDir
   if (shouldVersion) {
     const version = getVersion(config.versioning)
-    core.info(`Using version: ${version}`)
+    core.info(
+      `${colors.cyan}Using version:${colors.reset} ${colors.green}${version}${colors.reset}`
+    )
     outDir = path.join(version, config.outDir)
   }
 
-  core.info(`Target path: ${outDir || '(root)'}`)
+  core.info(
+    `${colors.cyan}Target path:${colors.reset} ${colors.green}${outDir || '(root)'}${colors.reset}`
+  )
 
   const s3 = new S3Interface({
     bucket: config.spaceName,
@@ -36,7 +47,9 @@ async function run(): Promise<void> {
     const fileName = path.basename(config.source)
     const s3Path = path.join(outDir, fileName)
 
-    core.info(`Uploading: ${s3Path}${config.uploadLatest ? ' (+ latest)' : ''}`)
+    core.info(
+      `${colors.cyan}Uploading:${colors.reset} ${colors.green}${s3Path}${colors.reset}${config.uploadLatest ? `${colors.dim} (+ latest)${colors.reset}` : ''}`
+    )
     await s3.upload(config.source, s3Path)
     uploadCount++
 
@@ -46,7 +59,9 @@ async function run(): Promise<void> {
       uploadCount++
     }
   } else {
-    core.info(`Scanning directory: ${config.source}`)
+    core.info(
+      `${colors.cyan}Scanning directory:${colors.reset} ${colors.green}${config.source}${colors.reset}`
+    )
 
     const uploadFolder = async (currentFolder: string): Promise<void> => {
       const files = await fs.promises.readdir(currentFolder)
@@ -59,7 +74,9 @@ async function run(): Promise<void> {
           const relativePath = path.relative(config.source, fullPath)
           const s3Path = path.join(outDir, relativePath)
 
-          core.info(`Uploading: ${s3Path}${config.uploadLatest ? ' (+ latest)' : ''}`)
+          core.info(
+            `${colors.cyan}Uploading:${colors.reset} ${colors.green}${s3Path}${colors.reset}${config.uploadLatest ? `${colors.dim} (+ latest)${colors.reset}` : ''}`
+          )
           await s3.upload(fullPath, s3Path)
           uploadCount++
 
@@ -81,7 +98,9 @@ async function run(): Promise<void> {
     ? `https://${config.cdnDomain}/${outDir}`
     : `https://${config.spaceName}.${config.spaceRegion}.digitaloceanspaces.com/${outDir}`
 
-  core.info(`Upload complete! ${uploadCount} file(s) uploaded to ${outputPath}`)
+  core.info(
+    `${colors.cyan}Upload complete!${colors.reset} ${uploadCount} file(s) uploaded to ${colors.green}${outputPath}${colors.reset}`
+  )
   core.setOutput('output_url', outputPath)
 }
 
