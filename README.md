@@ -1,6 +1,6 @@
-# DigitalOcean Spaces Action
+# DigitalOcean Spaces Sync Action
 
-A GitHub Action to upload files and directories to DigitalOcean Spaces. Supports automatic versioning from package.json.
+A GitHub Action to sync files and directories to DigitalOcean Spaces. Supports automatic versioning from package.json.
 
 ## Features
 
@@ -195,22 +195,18 @@ npm run format:check
 npm run build
 ```
 
-Note: This project uses private packages from `@ecssc`. You'll need to authenticate with GitHub Packages to install dependencies.
-
 ## Releasing
 
-Releases are managed with [release-it](https://github.com/release-it/release-it). To create a new release:
-
-```bash
-npm run release
-```
-
-When a new tag is pushed, the release workflow will automatically:
+Releases are managed through GitHub Releases. When a new release is published, the release workflow will automatically:
 
 1. Build the action
 2. Push the built `dist/` to the major version branch (e.g., `v1`)
 
-Users should reference the major version branch: `ecssc/spaces-action@v1`
+Users should reference the major version: `ecssc/spaces-action@v1`
+
+## Acknowledgements
+
+Forked from [BetaHuhn/do-spaces-action](https://github.com/BetaHuhn/do-spaces-action).
 
 ## License
 
