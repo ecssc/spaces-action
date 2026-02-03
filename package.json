@@ -1,0 +1,67 @@
+{
+  "name": "spaces-action",
+  "type": "module",
+  "description": "Upload directories/files to DigitalOcean Spaces via GitHub Actions. Supports package/library versioning.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "release-it",
+    "pre-commit": "tsc && lint-staged",
+    "prepublishOnly": "npm run test",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{cjs,js,jsx,html,css,json,yml,md}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecssc/spaces-action.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "DigitalOcean",
+    "DigitalOcean-Spaces",
+    "Spaces",
+    "CDN"
+  ],
+  "author": "Edward Coleridge Smith <edcoleridgesmith@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@aws-sdk/client-s3": "^3.712.0",
+    "@aws-sdk/lib-storage": "^3.712.0",
+    "action-input-parser": "^1.2.38",
+    "husky": "^9.1.7",
+    "mime-types": "^3.0.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.0.0",
+    "@ecssc/commitlint-config": "^0.0.3",
+    "@ecssc/eslint-config": "^1.0.0",
+    "@ecssc/prettier-config": "^0.1.0",
+    "@ecssc/release-it-config": "^1.0.0",
+    "@types/mime-types": "^3.0.1",
+    "@types/node": "^25.2.0",
+    "eslint": "^9.18.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.4.2",
+    "release-it": "^19.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}

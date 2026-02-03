@@ -1,0 +1,40 @@
+name: 'DigitalOcean Spaces Sync Action'
+description: 'Upload directories/files to DigitalOcean Spaces via GitHub Actions. Supports package/library versioning.'
+author: 'ECS Software Consulting Ltd.'
+inputs:
+  source:
+    description: 'Source directory/file to upload'
+    required: true
+  out_dir:
+    description: 'Output folder in your DigitalOcean Space'
+    required: false
+  space_name:
+    description: 'Name of your DigitalOcean Space'
+    required: true
+  space_region:
+    description: 'Region of your DigitalOcean Space'
+    required: true
+  access_key:
+    description: 'DigitalOcean Spaces access key'
+    required: true
+  secret_key:
+    description: 'DigitalOcean Spaces secret key'
+    required: true
+  versioning:
+    description: 'Version subdirectory: true for package.json, path to package.json, or any string (e.g. commit SHA)'
+    required: false
+  cdn_domain:
+    description: 'DigitalOcean Spaces CDN domain'
+    required: false
+  permission:
+    description: 'ACL permission (public-read or private)'
+    required: false
+outputs:
+  output_url:
+    description: 'The URL of the uploaded files'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+branding:
+  icon: 'package'
+  color: 'gray-dark'

@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  packages: read
+
+run-name: 'release: v${{ github.event.release.tag_name }}'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Get major version
+        id: version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          # Remove v prefix if present, then extract major version
+          VERSION="${TAG#v}"
+          MAJOR="v$(echo "$VERSION" | cut -d. -f1)"
+          echo "major=$MAJOR" >> $GITHUB_OUTPUT
+
+      - name: Update major version branch
+        env:
+          HUSKY: 0
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B ${{ steps.version.outputs.major }}
+          git add -f dist/
+          git commit -m "release: ${{ github.event.release.tag_name }}"
+          git push origin ${{ steps.version.outputs.major }} --force
