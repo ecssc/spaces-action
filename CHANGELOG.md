@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.0](https://github.com/ecssc/spaces-action/compare/1.2.0...1.3.0) (2026-02-03)
+
+### Features
+
+- support concurrent file uploads ([01175ef](https://github.com/ecssc/spaces-action/commit/01175ef5e2d9eae3477b0c4dd313d5a0905fe712))
+
 ## [1.2.0](https://github.com/ecssc/spaces-action/compare/1.1.0...1.2.0) (2026-02-03)
 
 ### Features
