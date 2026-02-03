@@ -2,45 +2,46 @@ import { resolve } from 'path'
 
 import { describe, it, expect } from 'vitest'
 
-import { forEach, getVersion } from '../helpers'
+import { parallelLimit, getVersion } from '../helpers'
 
-describe('forEach', () => {
-  it('iterates over array items sequentially', async () => {
-    const results: number[] = []
-    await forEach([1, 2, 3], async (item) => {
-      await Promise.resolve()
-      results.push(item)
-    })
-    expect(results).toEqual([1, 2, 3])
-  })
-
-  it('provides correct index and array to callback', async () => {
-    const indices: number[] = []
-    const array = ['a', 'b', 'c']
-    await forEach(array, async (item, index, arr) => {
-      await Promise.resolve()
-      indices.push(index)
-      expect(arr).toBe(array)
-    })
-    expect(indices).toEqual([0, 1, 2])
+describe('parallelLimit', () => {
+  it('processes all items and returns results', async () => {
+    const results = await parallelLimit([1, 2, 3], 2, (item) => Promise.resolve(item * 2))
+    expect(results).toEqual([2, 4, 6])
   })
 
   it('handles empty array', async () => {
-    const results: unknown[] = []
-    await forEach([], async (item) => {
-      await Promise.resolve()
-      results.push(item)
-    })
+    const results = await parallelLimit([], 2, (item: number) =>
+      Promise.resolve(item * 2)
+    )
     expect(results).toEqual([])
   })
 
-  it('awaits each callback before proceeding', async () => {
-    const results: number[] = []
-    await forEach([1, 2, 3], async (item) => {
+  it('respects concurrency limit', async () => {
+    let concurrent = 0
+    let maxConcurrent = 0
+
+    await parallelLimit([1, 2, 3, 4, 5], 2, async () => {
+      concurrent++
+      maxConcurrent = Math.max(maxConcurrent, concurrent)
       await new Promise((resolve) => setTimeout(resolve, 10))
-      results.push(item)
+      concurrent--
     })
-    expect(results).toEqual([1, 2, 3])
+
+    expect(maxConcurrent).toBeLessThanOrEqual(2)
+  })
+
+  it('processes items when limit exceeds array length', async () => {
+    const results = await parallelLimit([1, 2], 10, (item) => Promise.resolve(item * 2))
+    expect(results).toEqual([2, 4])
+  })
+
+  it('maintains result order regardless of completion order', async () => {
+    const results = await parallelLimit([30, 10, 20], 3, async (delay) => {
+      await new Promise((resolve) => setTimeout(resolve, delay))
+      return delay
+    })
+    expect(results).toEqual([30, 10, 20])
   })
 })
 

@@ -1,12 +1,24 @@
 import fs from 'fs'
 
-export async function forEach<T>(
-  array: T[],
-  callback: (item: T, index: number, array: T[]) => Promise<void>
-): Promise<void> {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
+export async function parallelLimit<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = []
+  let index = 0
+
+  async function worker(): Promise<void> {
+    while (index < items.length) {
+      const currentIndex = index++
+      results[currentIndex] = await fn(items[currentIndex])
+    }
   }
+
+  const workers = Array.from({ length: Math.min(limit, items.length) }, () => worker())
+  await Promise.all(workers)
+
+  return results
 }
 
 export function getVersion(value: string): string {
