@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { getInput } from 'action-input-parser'
+import * as core from '@actions/core'
 
 export interface Config {
   source: string
@@ -14,45 +14,43 @@ export interface Config {
   permission: string
 }
 
+const requiredInputs = [
+  'source',
+  'space_name',
+  'space_region',
+  'access_key',
+  'secret_key',
+] as const
+
+function validateRequiredInputs(): void {
+  const missing: string[] = []
+
+  for (const input of requiredInputs) {
+    if (!core.getInput(input)) {
+      missing.push(input)
+    }
+  }
+
+  if (missing.length > 0) {
+    core.setFailed(
+      `Missing required inputs:\n${missing.map((input) => `  - ${input}`).join('\n')}\n\nPlease check your workflow configuration.`
+    )
+    process.exit(1)
+  }
+}
+
+validateRequiredInputs()
+
 const config: Config = {
-  source: getInput({
-    key: 'source',
-    required: true,
-    modifier: (val: string) => {
-      return path.join(process.cwd(), val)
-    },
-  }) as string,
-  outDir: getInput({
-    key: 'out_dir',
-    default: '',
-  }) as string,
-  spaceName: getInput({
-    key: 'space_name',
-    required: true,
-  }) as string,
-  spaceRegion: getInput({
-    key: 'space_region',
-    required: true,
-  }) as string,
-  accessKey: getInput({
-    key: 'access_key',
-    required: true,
-  }) as string,
-  secretKey: getInput({
-    key: 'secret_key',
-    required: true,
-  }) as string,
-  versioning: getInput({
-    key: 'versioning',
-    default: 'false',
-  }) as string,
-  cdnDomain: getInput({
-    key: 'cdn_domain',
-  }),
-  permission: getInput({
-    key: 'permission',
-    default: 'public-read',
-  }) as string,
+  source: path.join(process.cwd(), core.getInput('source')),
+  outDir: core.getInput('out_dir') || '',
+  spaceName: core.getInput('space_name'),
+  spaceRegion: core.getInput('space_region'),
+  accessKey: core.getInput('access_key'),
+  secretKey: core.getInput('secret_key'),
+  versioning: core.getInput('versioning') || 'false',
+  cdnDomain: core.getInput('cdn_domain') || undefined,
+  permission: core.getInput('permission') || 'public-read',
 }
 
 export default config

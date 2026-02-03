@@ -43,7 +43,6 @@
     "@actions/core": "^3.0.0",
     "@aws-sdk/client-s3": "^3.712.0",
     "@aws-sdk/lib-storage": "^3.712.0",
-    "action-input-parser": "^1.2.38",
     "husky": "^9.1.7",
     "mime-types": "^3.0.2"
   },
