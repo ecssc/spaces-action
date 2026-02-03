@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0](https://github.com/ecssc/spaces-action/compare/1.0.5...1.1.0) (2026-02-03)
+
+### Features
+
+- display better error messages when params are missing ([b4e93cb](https://github.com/ecssc/spaces-action/commit/b4e93cb9e0d93cc0b9ca8e737ae97292048495dd))
+
 ## [1.0.5](https://github.com/ecssc/spaces-action/compare/1.0.4...1.0.5) (2026-02-03)
 
 ### Bug Fixes
