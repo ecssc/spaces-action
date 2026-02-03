@@ -2,7 +2,7 @@
   "name": "spaces-action",
   "type": "module",
   "description": "Upload directories/files to DigitalOcean Spaces via GitHub Actions. Supports package/library versioning.",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "scripts": {
     "build": "vite build",
     "lint": "eslint .",

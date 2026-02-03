@@ -10,12 +10,12 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       formats: ['cjs'],
-      fileName: () => 'index.js',
+      fileName: () => 'index.cjs',
     },
     rollupOptions: {
       output: {
         inlineDynamicImports: true,
-        entryFileNames: 'index.js',
+        entryFileNames: 'index.cjs',
       },
     },
     minify: false,
