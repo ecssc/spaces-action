@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/ecssc/spaces-action/compare/1.1.0...1.2.0) (2026-02-03)
+
+### Features
+
+- add upload latest flag ([799179b](https://github.com/ecssc/spaces-action/commit/799179b63e035abef3ce60425b55c5f48d8cd097))
+- log a single line per file during uploads ([23ef855](https://github.com/ecssc/spaces-action/commit/23ef855ae78a80b10dcb9d4079bfafa6bf9dd89b))
+- use color coding in logs ([dacfcbf](https://github.com/ecssc/spaces-action/commit/dacfcbfc48036d890c38d78b21f3944011953724))
+
 ## [1.1.0](https://github.com/ecssc/spaces-action/compare/1.0.5...1.1.0) (2026-02-03)
 
 ### Features
