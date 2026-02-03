@@ -112,8 +112,8 @@ The `versioning` input accepts:
 
 This creates:
 
-- `js/v1.2.3/bundle.min.js`
-- `js/latest/bundle.min.js`
+- `v1.2.3/js/bundle.min.js`
+- `latest/js/bundle.min.js`
 
 To use a package.json in a different location:
 
@@ -137,8 +137,8 @@ versioning: packages/my-lib/package.json
 
 This creates:
 
-- `builds/abc1234.../`
-- `builds/latest/`
+- `abc1234.../builds/`
+- `latest/builds/`
 
 ### Custom CDN domain
 

@@ -14,7 +14,7 @@ async function run(): Promise<void> {
   if (shouldVersion) {
     const version = getVersion(config.versioning)
     core.info(`Using version: ${version}`)
-    outDir = path.join(config.outDir, version)
+    outDir = path.join(version, config.outDir)
   }
 
   core.info(`Target path: ${outDir || '(root)'}`)
@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     uploadCount++
 
     if (shouldVersion) {
-      const s3PathLatest = path.join(config.outDir, 'latest', fileName)
+      const s3PathLatest = path.join('latest', config.outDir, fileName)
       core.info(`Uploading to latest: ${fileName}`)
       await s3.upload(config.source, s3PathLatest)
       uploadCount++
@@ -65,7 +65,7 @@ async function run(): Promise<void> {
           uploadCount++
 
           if (shouldVersion) {
-            const s3PathLatest = path.join(config.outDir, 'latest', relativePath)
+            const s3PathLatest = path.join('latest', config.outDir, relativePath)
             core.info(`Uploading to latest: ${relativePath}`)
             await s3.upload(fullPath, s3PathLatest)
             uploadCount++
