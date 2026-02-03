@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
-    target: 'node20',
+    target: 'node22',
     ssr: true,
     outDir: 'dist',
     lib: {
